@@ -1,0 +1,8 @@
+NODE_ENV=development
+PORT=1337
+
+PGUSER=koaapp
+PGHOST=postgres
+PGPASSWORD=nodeapp
+PGDATABASE=cars_db
+PGPORT=5432

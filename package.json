@@ -1,0 +1,27 @@
+{
+  "name": "koa-postgres",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bin/server.js",
+    "watch": "nodemon bin/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "6.26.3",
+    "babel-preset-koa2-node7": "0.1.0",
+    "boom": "7.2.0",
+    "convict": "4.3.1",
+    "koa": "2.5.1",
+    "koa-bodyparser": "4.2.1",
+    "koa-compose": "4.1.0",
+    "koa-router": "7.4.0",
+    "nodemon": "1.18.0",
+    "pg": "7.4.3"
+  },
+  "devDependencies": {}
+}

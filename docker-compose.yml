@@ -1,0 +1,23 @@
+version: "3"
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint:
+      - "npm"
+    command:
+      - "run"
+      - "watch"
+    env_file:
+      - ./src/config/development
+    ports:
+      - 4000:4000
+    volumes:
+      - "./:/app"
+  postgres:
+    build:
+      context: ./db
+      dockerfile: Dockerfile
+    ports:
+    - 5432:5432
