@@ -3,8 +3,10 @@ import pool from '../config/db';
 async function getUsers() {
 	try {
 		const client = await pool.connect();
-		const res = await client.query('SELECT (id, name, email) FROM user_info');
+		const res = await client.query('SELECT id, name, email FROM user_info');
 		client.release(true);
+		console.log(res);
+		
 		return res.rows;
 	} catch (error) {
 		console.log(error);
@@ -14,6 +16,25 @@ async function getUsers() {
 
 export const get = async (ctx) => {
 	ctx.body = { users: await getUsers() };
+};
+
+async function getUserById(id) {
+	try {
+		const client = await pool.connect();
+		const res = await client.query('SELECT * FROM user_info WHERE id=($1)', [id]);
+		client.release(true);
+		console.log(res);
+		
+		return res.rows;
+	} catch (error) {
+		console.log(error);
+		return { error: error.message };
+	}
+}
+
+export const getById = async (ctx) => {	
+	const { id } = ctx.params;
+	ctx.body = { users: await getUserById(id) };
 };
 
 async function insertUser(name, email, phone_number, address) {

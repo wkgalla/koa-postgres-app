@@ -9,6 +9,7 @@ const router = new Router({
 })
 
 router.get('/', Controller.get);
+router.get('/:id', Controller.getById);
 router.post('/', Controller.post);
 router.put('/', Controller.put);
 router.delete('/', Controller.remove);

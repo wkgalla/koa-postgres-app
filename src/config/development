@@ -4,5 +4,5 @@ PORT=1337
 PGUSER=koaapp
 PGHOST=postgres
 PGPASSWORD=nodeapp
-PGDATABASE=cars_db
+PGDATABASE=koaapp
 PGPORT=5432
