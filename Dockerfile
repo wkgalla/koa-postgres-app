@@ -1,4 +1,4 @@
-FROM node:carbon
+FROM node:10-alpine
 
 RUN mkdir -p /app
 
@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 
-COPY . /app
+COPY . ./
 
 EXPOSE 4000
 
