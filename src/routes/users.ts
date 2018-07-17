@@ -1,7 +1,6 @@
-import Router from 'koa-router';
-import Compose from 'koa-compose';
-import Boom from 'boom';
-
+import * as Router from 'koa-router';
+import * as Compose from 'koa-compose';
+import * as Boom from 'boom';
 import * as Controller from '../controllers/users';
 
 const router = new Router({
@@ -18,8 +17,8 @@ const routes = router.routes();
 
 const allowedMethods = router.allowedMethods({
 	throw: true,
-	notImplemented: () => new Boom.notImplemented("method is not written yet!"),
-	methodNotAllowed: () => new Boom.methodNotAllowed("that method iss not allowd")
+	notImplemented: () => Boom.notImplemented("method is not written yet!"),
+	methodNotAllowed: () => Boom.methodNotAllowed("that method iss not allowd")
 });
 
 export default () => Compose([

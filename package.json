@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node bin/server.js",
-    "watch": "nodemon bin/server.js"
+    "watch": "nodemon --watch src --watch bin -e ts --exec 'ts-node' ./bin/server.ts"
   },
   "keywords": [],
   "author": "",
@@ -23,5 +23,14 @@
     "nodemon": "1.18.0",
     "pg": "7.4.3"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/boom": "^7.2.0",
+    "@types/convict": "^4.2.0",
+    "@types/koa": "^2.0.46",
+    "@types/koa-bodyparser": "4.2.0",
+    "@types/koa-router": "^7.0.30",
+    "@types/pg": "^7.4.10",
+    "ts-node": "^7.0.0",
+    "typescript": "^2.9.2"
+  }
 }

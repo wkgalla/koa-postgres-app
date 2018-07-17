@@ -1,5 +1,5 @@
-import Koa from 'koa';
-import bodyParser from 'koa-bodyparser';
+import * as Koa from 'koa';
+import * as bodyParser from 'koa-bodyparser';
 
 import routeMiddleWare from './routes';
 
