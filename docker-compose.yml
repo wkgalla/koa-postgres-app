@@ -15,8 +15,10 @@ services:
     volumes:
       - "./src:/app/src"
   postgres:
-    build:
-      context: ./db
-      dockerfile: Dockerfile
+    image: postgres:10.4
+    environment:
+      - POSTGRES_USER=koaapp
+      - POSTGRES_PASSWORD=nodeapp
+      - POSTGRES_DB=koaapp
     ports:
     - 5432:5432
