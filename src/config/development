@@ -1,8 +1,8 @@
 NODE_ENV=development
 PORT=1337
 
-PGUSER=koaapp
-PGHOST=postgres
-PGPASSWORD=nodeapp
-PGDATABASE=koaapp
-PGPORT=5432
+DB_USERNAME=koaapp
+DB_HOST=postgres
+DB_PASSWORD=nodeapp
+DB_NAME=koaapp
+DB_PORT=5432

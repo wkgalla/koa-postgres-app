@@ -1,22 +1,13 @@
 import { Context } from 'koa';
-import pool from '../config/db';
+import db from '../db/models'
+import UserI from '../types/user';
 
-interface User {
-	id?: string,
-	name: string,
-	email: string,
-	phone_number: string,
-	address: string
-}
+const { User } = db
 
 async function getUsers() {
 	try {
-		const client = await pool.connect();
-		const res = await client.query('SELECT id, name, email FROM user_info');
-		client.release();
-		console.log(res);
-		
-		return res.rows;
+		const users = await User.findAll();
+		return users;
 	} catch (error) {
 		console.log(error);
 		return { error: error.message };
@@ -29,28 +20,25 @@ export const get = async (ctx: Context) => {
 
 async function getUserById(id: string) {
 	try {
-		const client = await pool.connect();
-		const res = await client.query('SELECT * FROM user_info WHERE id=($1)', [id]);
-		client.release();
-		console.log(res);
-		
-		return res.rows;
+		const users = await User.findById(id);
+		return users;
 	} catch (error) {
 		console.log(error);
 		return { error: error.message };
 	}
 }
 
-export const getById = async (ctx: Context) => {	
+export const getById = async (ctx: Context) => {
 	const { id } = ctx.params;
 	ctx.body = { users: await getUserById(id) };
 };
 
-async function insertUser({name, email, phone_number, address} : User) {
+async function insertUser({ name, email, phoneNumber, address }: UserI) {
+
 	try {
-		const client = await pool.connect();
-		const res = await client.query('INSERT INTO user_info (name, email, phone_number, address) VALUES($1, $2, $3, $4)', [name, email, phone_number, address]);
-		client.release();
+		const res = await User.create({
+			name, email, phoneNumber, address
+		})
 		return 'User successfully inserted';
 	} catch (error) {
 		console.log(error);
@@ -59,16 +47,23 @@ async function insertUser({name, email, phone_number, address} : User) {
 }
 
 export const post = async (ctx: Context) => {
-	const { name, email, phone_number, address } = ctx.request.body;
-	ctx.body = { message: await insertUser({name, email, phone_number, address}) };
+	const { name, email, phoneNumber, address } = ctx.request.body;
+	ctx.body = { message: await insertUser({ name, email, phoneNumber, address }) };
 };
 
-async function updateUser(id: string, userName: string) {
+async function updateUser(id: string, name: string, email: string, phoneNumber: string, address: string) {
 	try {
-		const client = await pool.connect();
-		const res = await client.query('UPDATE user_info SET name=($1) WHERE id=($2)', [userName, id]);
-		client.release();
-		if (res.rowCount === 0) {
+		const [res] = await User.update({
+			name: name,
+			email: email,
+			phoneNumber: phoneNumber,
+			address: address
+		}, {
+			where: {
+				id: id
+			}
+		})
+		if (res === 0) {
 			return 'No record updated';
 		}
 		return 'User successfully updated';
@@ -79,20 +74,21 @@ async function updateUser(id: string, userName: string) {
 }
 
 export const put = async (ctx: Context) => {
-	const { id, name } = ctx.request.body;
-	ctx.body = { message: await updateUser(id, name) };
+	const { id, name, email, phoneNumber, address } = ctx.request.body;
+	ctx.body = { message: await updateUser(id, name, email, phoneNumber, address) };
 };
 
 async function removeUser(id: string) {
 	try {
-		const client = await pool.connect();
-		const res = await client.query('DELETE FROM user_info WHERE id=($1)', [id]);
-		client.release();
-		console.log(res);
-
-		if (res.rowCount === 0) {
-			return 'No record removed';
+		const res = await User.destroy({
+			where: {
+				id: id
+			}
+		});
+		if (res === 0) {
+			return `No user found with id ${id}`
 		}
+		console.log(res);
 		return 'User successfully removed';
 	} catch (error) {
 		console.log(error);
@@ -100,6 +96,6 @@ async function removeUser(id: string) {
 	}
 }
 export const remove = async (ctx: Context) => {
-	const {id} = ctx.request.body;
+	const { id } = ctx.request.body;
 	ctx.body = { message: await removeUser(id) };
 };
